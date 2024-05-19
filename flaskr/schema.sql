@@ -52,6 +52,16 @@ CREATE TABLE plan (
     description TEXT
 );
 
+CREATE TABLE cart (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    post_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    added_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (post_id) REFERENCES post (id)
+);
+
 INSERT INTO user (username, password, created, nickname, role_id)
 VALUES
 ('admin', 'scrypt:32768:8:1$ufggR0XSoDHzvzjV$1e3d0dda1dd0f0fb1d2ff6062ce94507f81a605a3426590c1c91edd5dd7c11e0c244a9ff0c6137f4e6a877426a6b03ec94fea026f52ceac0345f1d3d590d4326', CURRENT_TIMESTAMP, 'AdminUser', (SELECT id FROM role WHERE name='admin')),
