@@ -1,8 +1,16 @@
-DROP TABLE IF EXISTS subscription;
-DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS subscription;
 DROP TABLE IF EXISTS plan;
+DROP TABLE IF EXISTS role;
+
+CREATE TABLE role (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+);
+
+-- Populate the role table with predefined roles
+INSERT INTO role (name) VALUES ('guest'), ('user'), ('admin');
 
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,9 +51,3 @@ CREATE TABLE plan (
     duration INTEGER NOT NULL,
     description TEXT
 );
-
-CREATE TABLE role (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT UNIQUE NOT NULL
-);
-INSERT INTO role (name) VALUES ('guest'), ('user'), ('admin');
