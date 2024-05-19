@@ -17,6 +17,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
         nickname = request.form['nickname']
+        role = 'user'
         created = datetime.now()
         db = get_db()
         error = None
@@ -30,9 +31,10 @@ def register():
 
         if error is None:
             try:
+                role_id = db.execute("SELECT id FROM role WHERE name = ?", (role,)).fetchone()['id']
                 db.execute(
-                    "INSERT INTO user (username, password, nickname, created) VALUES (?, ?, ?, ?)",
-                    (username, generate_password_hash(password), nickname, created),
+                    "INSERT INTO user (username, password, nickname, created, role_id) VALUES (?, ?, ?, ?, ?)",
+                    (username, generate_password_hash(password), nickname, created, role_id),
                 )
                 db.commit()
             except db.IntegrityError:
