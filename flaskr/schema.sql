@@ -1,6 +1,7 @@
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS subscription;
+DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS plan;
 
 CREATE TABLE user (
@@ -8,7 +9,9 @@ CREATE TABLE user (
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    nickname TEXT NOT NULL
+    nickname TEXT NOT NULL,
+    role_id INTEGER NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES role (id)
 );
 
 CREATE TABLE post (
@@ -40,3 +43,9 @@ CREATE TABLE plan (
     duration INTEGER NOT NULL,
     description TEXT
 );
+
+CREATE TABLE role (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+);
+INSERT INTO role (name) VALUES ('guest'), ('user'), ('admin');
