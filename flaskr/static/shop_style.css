@@ -41,10 +41,66 @@ nav ul li a {
     border-radius: 8px;
 }
 
-h1 {
+h1, h2 {
     color: #2c3e50;
     text-align: center;
     margin-bottom: 1.5rem;
+}
+
+/* Post styles */
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.post-item {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-item img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.post-item h2 {
+    color: #3498db;
+    margin: 0;
+}
+
+.post-item p {
+    margin: 0.5rem 0;
+}
+
+.post-item a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.post-item a:hover h2 {
+    text-decoration: underline;
+}
+
+/* Button styles */
+.btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
 }
 
 .footer {
@@ -72,4 +128,60 @@ h1 {
         padding: 1rem;
         margin: 1rem;
     }
+}
+.post-detail-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.post-title {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.post-description {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.post-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e74c3c;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.btn-back {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    text-align: center;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-decoration: none;
+}
+
+.btn-back:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
 }
