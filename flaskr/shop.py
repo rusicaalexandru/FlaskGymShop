@@ -1,4 +1,7 @@
 from flask import Blueprint, render_template, flash
+from werkzeug.exceptions import abort
+
+from flaskr.auth import login_required
 from flaskr.db import get_db
 bp = Blueprint('shop', __name__)
 
@@ -15,6 +18,7 @@ def index():
 
 
 @bp.route('/post/<int:post_id>')
+@login_required
 def post_detail(post_id):
     db = get_db()
     post = db.execute(
@@ -24,6 +28,6 @@ def post_detail(post_id):
         ).fetchone()
 
     if post is None:
-        flash(f"404. Post id {post_id} doesn't exist")
+        abort(404, f"Post id {post_id} doesn't exist")
 
     return render_template('shop/post_detail.html', post=post)
