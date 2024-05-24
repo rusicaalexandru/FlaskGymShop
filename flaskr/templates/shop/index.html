@@ -1,0 +1,20 @@
+{% extends 'shop/base_shop.html' %}
+
+{% block title %}Home - Flask Gym Shop{% endblock %}
+
+{% block content %}
+    <h1>Available Products</h1>
+    <div class="post-list">
+        {% for post in posts %}
+            <div class="post-item">
+                <a href="{{ url_for('shop.post_detail', post_id=post['id']) }}">
+                    <img src="{{ url_for('static', filename=post['image_path']) }}" alt="{{ post['title'] }}">
+                    <h2>{{ post['title'] }}</h2>
+                </a>
+                <p>{{ post['description']|truncate(100) }}</p>
+                <p><strong>Price:</strong> ${{ post['price'] }}</p>
+                <p><small>Posted by {{ post['author'] }} on {{ post['created'] }}</small></p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

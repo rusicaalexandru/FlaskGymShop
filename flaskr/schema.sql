@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS subscription;
 DROP TABLE IF EXISTS plan;
 DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS cart;
 
 CREATE TABLE role (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -67,3 +68,11 @@ VALUES
 ('admin', 'scrypt:32768:8:1$ufggR0XSoDHzvzjV$1e3d0dda1dd0f0fb1d2ff6062ce94507f81a605a3426590c1c91edd5dd7c11e0c244a9ff0c6137f4e6a877426a6b03ec94fea026f52ceac0345f1d3d590d4326', CURRENT_TIMESTAMP, 'AdminUser', (SELECT id FROM role WHERE name='admin')),
 ('user1', 'scrypt:32768:8:1$1bVU5CV1UkgiHBzw$1c17317fbf87f5f4f3bf79f48fb33be08bcd41ea630ed1dbc495919d7f667f2443204c6cc6bd10d3d971277eff693081af9fbd719500463c996650b33dc5a5bc', CURRENT_TIMESTAMP, 'UserOne', (SELECT id FROM role WHERE name='user')),
 ('user2', 'scrypt:32768:8:1$yE3ATopbZsNnJ8Uk$60f4a6d6ca2846a9aa92832c08c712e4fed4d6e2d6cf474d7f5ef0f4fadbbc5bff00a60db6867a47b6768429b66741d8dec86558cc5728fd0505a8426eb53659', CURRENT_TIMESTAMP, 'UserTwo', (SELECT id FROM role WHERE name='user'));
+
+INSERT INTO post (author_id, created, image_path, title, description, price)
+VALUES
+((SELECT id FROM user WHERE username='admin'), CURRENT_TIMESTAMP, 'images/dumbbells.jpg', 'Set of Dumbbells', 'A high-quality set of dumbbells for strength training.', 50),
+((SELECT id FROM user WHERE username='user1'), CURRENT_TIMESTAMP, 'images/treadmill.jpg', 'Treadmill', 'A sturdy treadmill with multiple speed settings.', 300),
+((SELECT id FROM user WHERE username='user2'), CURRENT_TIMESTAMP, 'images/yoga-mat.jpg', 'Yoga Mat', 'A comfortable yoga mat for your daily exercises.', 20),
+((SELECT id FROM user WHERE username='user1'), CURRENT_TIMESTAMP, 'images/kettlebell.jpg', 'Kettlebell', 'A durable kettlebell available in various weights.', 40),
+((SELECT id FROM user WHERE username='user2'), CURRENT_TIMESTAMP, 'images/resistance-bands.jpg', 'Resistance Bands', 'A set of resistance bands with different tension levels.', 25);
