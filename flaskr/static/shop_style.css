@@ -114,3 +114,21 @@ nav ul li a {
     background-color: #2980b9;
     transform: translateY(-2px);
 }
+
+/* style.css */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex-shrink: 0;
+}

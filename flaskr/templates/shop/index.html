@@ -8,14 +8,16 @@
         {% for post in posts %}
             <div class="col">
                 <div class="card shadow-sm">
-                    <a href="{{ url_for('shop.post_detail', post_id=post['id']) }}"><img src="{{ url_for('static', filename=post['image_path']) }}" alt="{{ post['title'] }}" class="bd-placeholder-img card-img-top"></a>
+                    <a href="{{ url_for('shop.post_detail', post_id=post['id']) }}">
+                        <img src="{{ url_for('static', filename=post['image_path']) }}" alt="{{ post['title'] }}" class="bd-placeholder-img card-img-top">
+                    </a>
                     <div class="card-body">
                         <p class="card-text">{{ post['description']|truncate(100) }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">
-                                    Cart
-                                </button>
+                                <form action="{{ url_for('shop.add_to_cart', post_id=post['id']) }}" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Cart</button>
+                                </form>
                                 <button type="button" class="btn btn-sm btn-outline-secondary">
                                     <strong>Price:</strong> ${{ post['price'] }}
                                 </button>

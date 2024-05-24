@@ -58,7 +58,9 @@ def view_cart():
         ' WHERE c.user_id = ?', (user_id,)
     ).fetchall()
 
-    return render_template('shop/cart.html', cart_items=cart_items)
+    total_price = sum(item['price'] * item['quantity'] for item in cart_items)
+
+    return render_template('shop/cart.html', cart_items=cart_items, total_price=total_price)
 
 
 @bp.route('/remove_from_cart/<int:cart_id>', methods=['POST'])
