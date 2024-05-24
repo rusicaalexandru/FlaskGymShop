@@ -4,16 +4,26 @@
 
 {% block content %}
     <h1>Available Products</h1>
-    <div class="post-list">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {% for post in posts %}
-            <div class="post-item">
-                <a href="{{ url_for('shop.post_detail', post_id=post['id']) }}">
-                    <img src="{{ url_for('static', filename=post['image_path']) }}" alt="{{ post['title'] }}">
-                    <h2>{{ post['title'] }}</h2>
-                </a>
-                <p>{{ post['description']|truncate(100) }}</p>
-                <p><strong>Price:</strong> ${{ post['price'] }}</p>
-                <p><small>Posted by {{ post['author'] }} on {{ post['created'] }}</small></p>
+            <div class="col">
+                <div class="card shadow-sm">
+                    <a href="{{ url_for('shop.post_detail', post_id=post['id']) }}"><img src="{{ url_for('static', filename=post['image_path']) }}" alt="{{ post['title'] }}" class="bd-placeholder-img card-img-top"></a>
+                    <div class="card-body">
+                        <p class="card-text">{{ post['description']|truncate(100) }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">
+                                    Cart
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">
+                                    <strong>Price:</strong> ${{ post['price'] }}
+                                </button>
+                            </div>
+                            <small class="text-body-secondary">Posted by {{ post['author'] }} on {{ post['created'] }}</small>
+                        </div>
+                    </div>
+                </div>
             </div>
         {% endfor %}
     </div>
