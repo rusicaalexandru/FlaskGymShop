@@ -21,7 +21,10 @@
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
                 {% endif %}
                 {% if g.user %}
-                <li><a href="{{ url_for('shop.view_cart') }}"><i class="bi bi-cart-fill"></i></a></li>
+                    <li><a href="{{ url_for('shop.profile') }}">Profile</a></li>
+                {% endif %}
+                {% if g.user %}
+                    <li><a href="{{ url_for('shop.view_cart') }}"><i class="bi bi-cart-fill"></i></a></li>
                 {% endif %}
             </ul>
         </nav>

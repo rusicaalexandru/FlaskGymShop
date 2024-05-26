@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, g, flash, redirect, url_for
+from flask import Blueprint, render_template, g, flash, redirect, url_for, request
 from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
@@ -15,6 +15,16 @@ def index():
         ' ORDER BY p.created DESC'
     ).fetchall()
     return render_template('shop/index.html', posts=posts)
+
+
+@bp.route('/profile')
+def profile():
+    db = get_db()
+    posts = db.execute(
+        'SELECT p.id, p.title, p.description, p.price'
+        ' FROM post p WHERE p.author_id = ?', (g.user['id'],)
+    ).fetchall()
+    return render_template('shop/profile.html', posts=posts)
 
 
 @bp.route('/add_to_cart/<int:post_id>', methods=['POST'])
@@ -44,6 +54,53 @@ def add_to_cart(post_id):
     db.commit()
     flash('Item added to cart.')
     return redirect(url_for('shop.index'))
+
+
+@bp.route('/edit_post/<int:post_id>', methods=('GET', 'POST'))
+@login_required
+def edit_post(post_id):
+    db = get_db()
+    post = db.execute(
+        'SELECT * FROM post WHERE id = ? AND author_id = ?', (post_id, g.user['id'])
+    ).fetchone()
+
+    if post is None:
+        abort(404, "Post not found")
+
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        price = request.form['price']
+        error = None
+
+        if not title:
+            error = 'Title is required'
+        elif not description:
+            error = 'Description is required'
+        elif not price:
+            error = 'price is required'
+
+        if error is None:
+            db.execute(
+                'UPDATE post SET title = ?, description = ?, price = ? WHERE id = ?',
+                (title, description, price, post_id)
+            )
+            db.commit()
+            flash('Post updated successfully')
+            return redirect(url_for('shop.profile'))
+        flash(error)
+
+    return render_template('shop/edit_post.html', post=post)
+
+
+@bp.route('/delete_post/<int:post_id>', methods=('POST',))
+@login_required
+def delete_post(post_id):
+    db = get_db()
+    db.execute('DELETE FROM post WHERE id = ? AND author_id = ?', (post_id, g.user['id']))
+    db.commit()
+    flash('Post Deleted successfully')
+    return redirect(url_for('shop.profile'))
 
 
 @bp.route('/cart')
@@ -79,7 +136,6 @@ def remove_from_cart(cart_id):
 
 
 @bp.route('/post/<int:post_id>')
-@login_required
 def post_detail(post_id):
     db = get_db()
     post = db.execute(
