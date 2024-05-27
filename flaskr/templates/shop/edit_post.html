@@ -1,0 +1,23 @@
+{% extends 'shop/base_shop.html' %}
+
+{% block title %}Edit Post - Flask Gym Shop{% endblock %}
+
+{% block content %}
+<h1 class="mt-5">Edit Post</h1>
+<form action="{{ url_for('shop.edit_post', post_id=post.id) }}" method="post">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required>{{ post.description }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" class="form-control" id="price" name="price" value="{{ post.price }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="{{ url_for('shop.profile') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

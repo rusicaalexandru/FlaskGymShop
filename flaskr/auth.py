@@ -81,7 +81,8 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = get_db().execute(
-            'SELECT * FROM user WHERE id = ?', (user_id,)
+            'SELECT u.*, r.name as role_name FROM user u JOIN role r ON u.role_id = r.id WHERE u.id = ?',
+            (user_id,)
         ).fetchone()
 
 

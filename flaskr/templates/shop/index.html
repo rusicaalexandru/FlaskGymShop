@@ -1,6 +1,6 @@
 {% extends 'shop/base_shop.html' %}
 
-{% block title %}Home - Flask Gym Shop{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
     <h1>Available Products</h1>
@@ -22,7 +22,7 @@
                                     <strong>Price:</strong> ${{ post['price'] }}
                                 </button>
                             </div>
-                            <small class="text-body-secondary">Posted by {{ post['author'] }} on {{ post['created'] }}</small>
+                            <small class="text-body-secondary">Posted by <strong>{{ post['author'] }}</strong> on {{ post['created'] }}</small>
                         </div>
                     </div>
                 </div>
