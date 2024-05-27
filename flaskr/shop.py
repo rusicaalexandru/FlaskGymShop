@@ -190,4 +190,4 @@ def create_post():
 
         flash(error)
 
-    return render_template('shop.create_post.html')
+    return render_template('shop/create_post.html')
