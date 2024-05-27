@@ -43,7 +43,6 @@ def add_to_cart(post_id):
     ).fetchone()
 
     if cart_item:
-        # Update quantity if the item is already in the cart
         db.execute(
             'UPDATE cart SET quantity = quantity + 1 WHERE user_id = ? AND post_id = ?',
             (user_id, post_id,)
@@ -75,6 +74,7 @@ def edit_post(post_id):
         title = request.form['title']
         description = request.form['description']
         price = request.form['price']
+        image = request.files['image']
         error = None
 
         if not title:
@@ -84,15 +84,25 @@ def edit_post(post_id):
         elif not price:
             error = 'price is required'
 
-        if error is None:
+        if error is not None:
+            flash(error)
+        else:
+            image_path = post['image_path']
+            if image:
+                if os.path.exists(os.path.join('flaskr/static', image_path)):
+                    os.remove(os.path.join('flaskr/static', image_path))
+
+                filename = secure_filename(image.filename)
+                image_path = os.path.join('images', filename).replace("\\", "/")
+                image.save(os.path.join('flaskr/static', image_path))
+
             db.execute(
-                'UPDATE post SET title = ?, description = ?, price = ? WHERE id = ?',
-                (title, description, price, post_id)
+                'UPDATE post SET title = ?, description = ?, price = ?, image_path = ? WHERE id = ?',
+                (title, description, price, image_path, post_id)
             )
             db.commit()
             flash('Post updated successfully')
             return redirect(url_for('shop.profile'))
-        flash(error)
 
     return render_template('shop/edit_post.html', post=post)
 
