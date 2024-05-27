@@ -1,6 +1,6 @@
 import os.path
 
-from flask import Blueprint, render_template, g, flash, redirect, url_for, request
+from flask import Blueprint, render_template, g, flash, redirect, url_for, request, current_app
 
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
@@ -175,17 +175,18 @@ def create_post():
 
         if error is None:
             filename = secure_filename(image.filename)
-            image_path = os.path.join('static/images', filename)
-            image.save(image_path)
+            relative_image_path = os.path.join('images', filename).replace("\\", "/")
+            absolute_image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            image.save(absolute_image_path)
 
             db = get_db()
             db.execute(
                 'INSERT INTO post (title, description, price, image_path, author_id)'
                 ' VALUES (?, ?, ?, ?, ?)',
-                (title, description, price, image_path, g.user['id'])
+                (title, description, price, relative_image_path, g.user['id'])
             )
             db.commit()
-            flash('Post created!')
+            flash('Post created successfully.')
             return redirect(url_for('shop.profile'))
 
         flash(error)
