@@ -111,9 +111,20 @@ def edit_post(post_id):
 @login_required
 def delete_post(post_id):
     db = get_db()
-    db.execute('DELETE FROM post WHERE id = ? AND author_id = ?', (post_id, g.user['id']))
+    post = db.execute(
+        'SELECT * FROM post WHERE id = ? AND author_id = ?', (post_id, g.user['id'])
+    ).fetchone()
+
+    if post is None:
+        abort(404, "Post not found or you don't have permission to delete it.")
+
+    image_path = post['image_path']
+    if os.path.exists(os.path.join('flaskr/static', image_path)):
+        os.remove(os.path.join('flaskr/static', image_path))
+
+    db.execute('DELETE FROM post WHERE id = ?', (post_id,))
     db.commit()
-    flash('Post Deleted successfully')
+    flash('Post deleted successfully.')
     return redirect(url_for('shop.profile'))
 
 
