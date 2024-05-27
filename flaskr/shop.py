@@ -1,5 +1,9 @@
+import os.path
+
 from flask import Blueprint, render_template, g, flash, redirect, url_for, request
+
 from werkzeug.exceptions import abort
+from werkzeug.utils import secure_filename
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
@@ -148,3 +152,42 @@ def post_detail(post_id):
         abort(404, f"Post id {post_id} doesn't exist")
 
     return render_template('shop/post_detail.html', post=post)
+
+
+@bp.route('/create_post', methods=['GET', 'POST'])
+@login_required
+def create_post():
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        price = request.form['price']
+        image = request.files['image']
+        error = None
+
+        if not title:
+            error = 'Title is required'
+        elif not description:
+            error = 'Description is required'
+        elif not price:
+            error = 'Price is required'
+        elif not image:
+            error = 'Image is required'
+
+        if error is None:
+            filename = secure_filename(image.filename)
+            image_path = os.path.join('static/images', filename)
+            image.save(image_path)
+
+            db = get_db()
+            db.execute(
+                'INSERT INTO post (title, description, price, image_path, author_id)'
+                ' VALUES (?, ?, ?, ?, ?)',
+                (title, description, price, image_path, g.user['id'])
+            )
+            db.commit()
+            flash('Post created!')
+            return redirect(url_for('shop.profile'))
+
+        flash(error)
+
+    return render_template('shop.create_post.html')
